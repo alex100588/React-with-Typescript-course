@@ -1,25 +1,14 @@
-import { ReactNode, useState } from "react"
+import React from 'react'
 
-interface Props{
-    children: ReactNode,
-    onClose: ()=>void
-}
+let count = 0
 
-const Alert = ({children, onClose}: Props) => {
-  return (
-    <>
-    <div className="alert alert-primary text-center alert-dismissible" role="alert">
-        {children}
-        <button onClick={onClose} type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {/* <div className="alert alert-secondary text-center" role="alert">
-        {children}
-      </div>
-    <div className="alert alert-danger text-center" role="alert">
-        {children}
-      </div> */}
-      </>
+const Message = () => {
+    count++
+    console.log(count);
+    
+    return (
+        <div>Message {count}</div>
   )
 }
 
-export default Alert
+export default Message
