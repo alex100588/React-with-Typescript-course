@@ -5,7 +5,7 @@ import { FieldValues } from "react-hook-form/dist/types";
 const FormWithHookForm = () => {
   const { register, handleSubmit, formState: {errors} } = useForm();
 
-  const onSubmit = (data: FieldValues) => console.log(data);
+  const onSubmit  = (data: FieldValues) => console.log(data);
   
 
   return (
@@ -22,7 +22,7 @@ const FormWithHookForm = () => {
             className="form-control"
           />
           {errors.name?.type === 'required' && <p className="text-danger">The name field is required </p>}
-          {errors.name?.type === 'minLength' && <p className="text-danger">The minium length is 3 </p>}
+          {errors.name?.type === 'minLength' && <p className="text-danger">The name must be at least 3 characters </p>}
         </div>
         <div className="mb-3">
           <label htmlFor="age" className="form-label">
