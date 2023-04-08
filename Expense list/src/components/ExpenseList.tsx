@@ -8,12 +8,12 @@ interface Expense {
 }
 
 interface Props {
-  expenses: Expense[];
+  expeses: Expense[];
   onDelete: (id: number) => void;
 }
 
-const ExpenseList = ({ expenses, onDelete }: Props) => {
-  if(expenses.length === 0) return <div className="text-center text-success">The list is empty</div>
+const ExpenseList = ({ expeses, onDelete }: Props) => {
+  if (expeses.length === 0) return null;
   return (
     <table className="table table-bordered">
       <thead>
@@ -25,30 +25,28 @@ const ExpenseList = ({ expenses, onDelete }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {expenses.map((expense) => {
-          return (
-            <tr key={expense.id}>
-              <td>{expense.description}</td>
-              <td>{expense.amount}</td>
-              <td>{expense.category}</td>
-              <td>
-                <button
-                  onClick={() => onDelete(expense.id)}
-                  className="btn btn-outline-danger"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          );
-        })}
+        {expeses.map((expense) => (
+          <tr key={expense.id}>
+            <td>{expense.description}</td>
+            <td>{expense.amount}</td>
+            <td>{expense.category}</td>
+            <td>
+              <button
+                onClick={() => onDelete(expense.id)}
+                className="btn btn-outline-danger"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
       </tbody>
       <tfoot>
         <tr>
           <td>Total</td>
           <td>
             $
-            {expenses
+            {expeses
               .reduce((acc, expense) => acc + expense.amount, 0)
               .toFixed(2)}
           </td>
