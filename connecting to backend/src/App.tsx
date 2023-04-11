@@ -9,41 +9,45 @@ interface User {
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     
-      axios
-        .get<User[]>("https://jsonplaceholder.typicode.com/users")
-        .then((resp) =>{
-          setUsers(resp.data)
-          setLoading(false)
-        } )
-        .catch(error =>{
-          setError(error.message)
-          setLoading(false)
-        } 
-        )
+    axios
+    .get<User[]>("https://jsonplaceholder.typicode.com/users")
+    .then((resp) => {
+      setUsers(resp.data);
+      setLoading(false);
+    })
+    .catch((error) => {
+      setError(error.message);
+        setLoading(false);
+      });
+    }, []);
+    
+    // console.log(users);
+    
+    // const [category, setCategory] = useState('')
+    
+    // Effect cleanup
+    // const connect = () => console.log("Connected");
+    // const disconnect = () => console.log("Disconnected");
+    
+    // useEffect(() => {
+      //   connect();
+      //   return () => disconnect();
+      // });
+
+
+      const deleteUser = (user: User) =>{
+        setUsers(users.filter(us => us.id !== user.id))
+      }
       
-  }, []);
- 
-  // console.log(users);
-
-  // const [category, setCategory] = useState('')
-
-  // Effect cleanup
-  // const connect = () => console.log("Connected");
-  // const disconnect = () => console.log("Disconnected");
-
-  // useEffect(() => {
-  //   connect();
-  //   return () => disconnect();
-  // });
-
-  return (
-    // <div>
+      return (
+        // <div>
     //   <select name="" id="" className="form-select" onChange={(e)=>setCategory(e.target.value)}>
     //   <option value=""></option>
     //   <option value="clothing">Clothing</option>
@@ -51,13 +55,21 @@ function App() {
     // </select>
     // <ProductList category={category} />
     // </div>
-    <ul>
+    <>
       {error && <p className="text-danger">{error}</p>}
       {loading && <div className="spinner-border"></div>}
-      {users.map((user) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
+      <ul className="list-group p-3">
+        {users.map((user) => (
+          <li
+            key={user.id}
+            className="list-group-item d-flex justify-content-between"
+          >
+            {user.name}
+            <button onClick={()=>deleteUser(user)} className="btn btn-outline-danger ">Delete</button>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 
