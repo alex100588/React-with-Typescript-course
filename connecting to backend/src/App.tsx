@@ -9,12 +9,26 @@ interface User {
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/users")
-      .then((resp) => setUsers(resp.data));
+    setLoading(true)
+    
+      axios
+        .get<User[]>("https://jsonplaceholder.typicode.com/users")
+        .then((resp) =>{
+          setUsers(resp.data)
+          setLoading(false)
+        } )
+        .catch(error =>{
+          setError(error.message)
+          setLoading(false)
+        } 
+        )
+      
   }, []);
+ 
   // console.log(users);
 
   // const [category, setCategory] = useState('')
@@ -38,6 +52,8 @@ function App() {
     // <ProductList category={category} />
     // </div>
     <ul>
+      {error && <p className="text-danger">{error}</p>}
+      {loading && <div className="spinner-border"></div>}
       {users.map((user) => (
         <li key={user.id}>{user.name}</li>
       ))}
