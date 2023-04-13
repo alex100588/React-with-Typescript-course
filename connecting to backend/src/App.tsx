@@ -51,6 +51,11 @@ function App() {
       });
   };
 
+  const updateUser = (user: User) => {
+    const updatedUser = { ...user, name: user.name + '!'}
+    setUsers(users.map(u => u.id === user.id ? updatedUser : u))
+  }
+
   return (
     // <div>
     //   <select name="" id="" className="form-select" onChange={(e)=>setCategory(e.target.value)}>
@@ -70,12 +75,15 @@ function App() {
             className="list-group-item d-flex justify-content-between"
           >
             {user.name}
-            <button
-              onClick={() => deleteUser(user)}
-              className="btn btn-outline-danger "
-            >
-              Delete
-            </button>
+            <div>
+              <button className="btn btn-outline-secondary me-2" onClick={()=>updateUser(user)}>Update</button>
+              <button
+                onClick={() => deleteUser(user)}
+                className="btn btn-outline-danger "
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
