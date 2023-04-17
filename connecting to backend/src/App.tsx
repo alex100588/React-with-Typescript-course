@@ -56,6 +56,22 @@ function App() {
     setUsers(users.map(u => u.id === user.id ? updatedUser : u))
   }
 
+  const addUser = () =>{
+    const originalUsers = [...users]
+    const newUser = {
+      id: 0,
+      name: 'Alex'
+    }
+    setUsers([newUser, ...users])
+    
+    axios.post("https://jsonplaceholder.typicode.com/users/", newUser)
+    .then(res=> setUsers([res.data, ...users]))
+    .catch(err=>{
+      setError(err.message)
+      setUsers(originalUsers)
+    })
+  }
+
   return (
     // <div>
     //   <select name="" id="" className="form-select" onChange={(e)=>setCategory(e.target.value)}>
@@ -67,7 +83,8 @@ function App() {
     // </div>
     <>
       {error && <p className="text-danger">{error}</p>}
-      {loading && <div className="spinner-border"></div>}
+      {loading && <div className="spinner-border" ></div>}
+      <button className="btn btn-primary m-3" onClick={addUser}>Add</button>
       <ul className="list-group p-3">
         {users.map((user) => (
           <li
