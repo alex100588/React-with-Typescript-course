@@ -52,25 +52,37 @@ function App() {
   };
 
   const updateUser = (user: User) => {
-    const updatedUser = { ...user, name: user.name + '!'}
-    setUsers(users.map(u => u.id === user.id ? updatedUser : u))
-  }
+    const originalUsers = [...users];
+    const updatedUser = { ...user, name: user.name + " updated!" };
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-  const addUser = () =>{
-    const originalUsers = [...users]
+    axios
+      .patch(
+        "https://jsonplaceholder.typicode.com/users/" + user.id,
+        updatedUser
+      )
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
+  const addUser = () => {
+    const originalUsers = [...users];
     const newUser = {
       id: 0,
-      name: 'Alex'
-    }
-    setUsers([newUser, ...users])
-    
-    axios.post("https://jsonplaceholder.typicode.com/users/", newUser)
-    .then(res=> setUsers([res.data, ...users]))
-    .catch(err=>{
-      setError(err.message)
-      setUsers(originalUsers)
-    })
-  }
+      name: "Alex",
+    };
+    setUsers([newUser, ...users]);
+
+    axios
+      .post("https://jsonplaceholder.typicode.com/users/", newUser)
+      .then((res) => setUsers([res.data, ...users]))
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
 
   return (
     // <div>
@@ -83,8 +95,10 @@ function App() {
     // </div>
     <>
       {error && <p className="text-danger">{error}</p>}
-      {loading && <div className="spinner-border" ></div>}
-      <button className="btn btn-primary m-3" onClick={addUser}>Add</button>
+      {loading && <div className="spinner-border"></div>}
+      <button className="btn btn-primary m-3" onClick={addUser}>
+        Add
+      </button>
       <ul className="list-group p-3">
         {users.map((user) => (
           <li
@@ -93,7 +107,12 @@ function App() {
           >
             {user.name}
             <div>
-              <button className="btn btn-outline-secondary me-2" onClick={()=>updateUser(user)}>Update</button>
+              <button
+                className="btn btn-outline-secondary me-2"
+                onClick={() => updateUser(user)}
+              >
+                Update
+              </button>
               <button
                 onClick={() => deleteUser(user)}
                 className="btn btn-outline-danger "
